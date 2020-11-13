@@ -1,0 +1,3 @@
+rootProject.name = "jetpack-compose-localization-preview"
+include ':sample'
+include ':localization'
