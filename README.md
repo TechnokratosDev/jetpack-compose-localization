@@ -37,30 +37,30 @@ val nonTrans = NonTranslatable("sym", "4")
 ```kotlin
 @Composable
 fun Content() {
-	Column() {
-		// Vocabulary - объект из библиотеки для быстрого доступа к локализации
-		// получаем объект текущей локализации
-	    val localization = Vocabulary.localization  
-	    // на нем вызываем определенную ранее extension-функцию, 
-		// которая вернет строку в нужной локали
-	    Text(text = localization.hello())
-	    // эта строка не будет переводиться
-	    Text(text = localization.nonTrans())
-	}
+  Column() {
+    // Vocabulary - объект из библиотеки для быстрого доступа к локализации
+    // получаем объект текущей локализации
+    val localization = Vocabulary.localization  
+    // на нем вызываем определенную ранее extension-функцию, 
+    // которая вернет строку в нужной локали
+    Text(text = localization.hello())
+    // эта строка не будет переводиться
+    Text(text = localization.nonTrans())
+  }
 }
 ```
 
 **_MainActivity.kt_**
 ```kotlin
 setContent {
-	val locale = remember { mutableStateOf(Locale.getDefault()) }  
-	Localization(locale = locale.value) {
-		Content()
-	}
+  val locale = remember { mutableStateOf(Locale.getDefault()) }  
+  Localization(locale = locale.value) {
+    Content()
+  }
 }
 ```
 При изменении состояния `locale`, будет изменяться текст по всей иерархии.
 
 Sample
 -
-<img src="media/localization.gif"/>
+<img height="600px" src="media/localization.gif"/>
