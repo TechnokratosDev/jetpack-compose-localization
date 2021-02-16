@@ -2,9 +2,10 @@ package com.technokratos.compose.localization
 
 import java.util.Locale
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ComposableContract
 import androidx.compose.runtime.Providers
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.ambientOf
+import androidx.compose.runtime.compositionLocalOf
 
 private val defaultLocalization: Localization = Localization(Locale.ENGLISH)
 
@@ -46,18 +47,18 @@ fun NonTranslatable(name: String, defaultValue: String): Localization.() -> Stri
     }
 }
 
-val AmbientLocalization = ambientOf { defaultLocalization }
+val LocalLocalization = compositionLocalOf { defaultLocalization }
 
 object Vocabulary {
     @Composable
-    @ComposableContract(readonly = true)
-    val localization: Localization get() = AmbientLocalization.current
+    @get:ReadOnlyComposable
+    val localization: Localization get() = LocalLocalization.current
 }
 
 @Composable
 fun Localization(locale: Locale, content: @Composable () -> Unit) {
     Providers(
-        AmbientLocalization provides (localizationMap[locale] ?: defaultLocalization),
-        children = content
+        LocalLocalization provides (localizationMap[locale] ?: defaultLocalization),
+        content = content
     )
 }

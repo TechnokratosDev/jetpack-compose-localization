@@ -10,10 +10,17 @@ val TATAR = Locale("tt")
 
 val supportedLocalesNow = registerSupportedLocales(RUSSIAN, TATAR)
 
+val localesHeader = Translatable("locales", "Locales") {
+    hashMapOf(
+        RUSSIAN to "Локали",
+        TATAR to "Локальләштерүләр"
+    )
+}
+
 val hello = Translatable("hello", "Hello!") {
     hashMapOf(
         RUSSIAN to "Привет!",
-        TATAR to "Исэнме!"
+        TATAR to "Исәнме!"
     )
 }
 
