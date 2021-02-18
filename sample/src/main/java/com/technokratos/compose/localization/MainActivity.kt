@@ -25,7 +25,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.technokratos.compose.localization.ui.SampleTheme
@@ -51,7 +50,7 @@ class MainActivity : AppCompatActivity() {
 }
 
 @Composable
-fun MyApp(content: @Composable ((Locale)-> Unit) -> Unit) {
+fun MyApp(content: @Composable ((Locale) -> Unit) -> Unit) {
     SampleTheme {
         val locale = remember { mutableStateOf(Locale.getDefault()) }
         Localization(locale = locale.value) {
@@ -90,7 +89,11 @@ fun LanguageChooser(modifier: Modifier = Modifier, onClick: (Locale) -> Unit = {
             }
         }
         items(locales.value.toList()) { locale ->
-            val background = if (locale == localization.locale) Color.Green.copy(alpha = 0.3f) else MaterialTheme.colors.surface
+            val background =
+                if (locale == localization.locale)
+                    Color.Green.copy(alpha = 0.3f)
+                else
+                    MaterialTheme.colors.surface
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -110,7 +113,11 @@ fun LanguageChooser(modifier: Modifier = Modifier, onClick: (Locale) -> Unit = {
 
 @Composable
 fun Examples(modifier: Modifier = Modifier) {
-    Column(modifier = modifier.fillMaxWidth().padding(8.dp)) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+    ) {
         val localization = Vocabulary.localization
         Text(text = localization.hello(), style = MaterialTheme.typography.h4)
         Text(text = localization.bye(), style = MaterialTheme.typography.h4)
