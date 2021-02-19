@@ -27,10 +27,10 @@ val supportedLocalesNow = registerSupportedLocales(RUSSIAN, TATAR)
 val hello = Translatable("hello", "Hello!") {  
   hashMapOf(  
       RUSSIAN to "Привет!",  
-	  TATAR to "Исэнме!"  
+	  TATAR to "Исәнме!"  
   )
   // вариант для непереводимых строк
-val nonTrans = NonTranslatable("sym", "4")
+val nonTrans = NonTranslatable("format", "%1\$d:%2\$02d")
 ```
 
 **_Ui.kt_**
@@ -45,7 +45,7 @@ fun Content() {
     // которая вернет строку в нужной локали
     Text(text = localization.hello())
     // эта строка не будет переводиться
-    Text(text = localization.nonTrans())
+    Text(text = localization.nonTrans().format(20, 9))
   }
 }
 ```
