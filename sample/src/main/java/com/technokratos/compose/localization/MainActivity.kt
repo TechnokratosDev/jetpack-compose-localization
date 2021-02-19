@@ -1,5 +1,7 @@
 package com.technokratos.compose.localization
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import java.util.Locale
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -52,11 +54,11 @@ class MainActivity : AppCompatActivity() {
 @Composable
 fun MyApp(content: @Composable ((Locale) -> Unit) -> Unit) {
     SampleTheme {
-        val locale = remember { mutableStateOf(Locale.getDefault()) }
-        Localization(locale = locale.value) {
+        var locale by remember { mutableStateOf(Locale.getDefault()) }
+        Localization(locale = locale) {
             Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
                 content {
-                    locale.value = it
+                    locale = it
                 }
             }
         }
@@ -77,7 +79,7 @@ fun DefaultPreview() {
 
 @Composable
 fun LanguageChooser(modifier: Modifier = Modifier, onClick: (Locale) -> Unit = {}) {
-    val locales = remember { derivedStateOf { supportedLocalesNow } }
+    val locales by remember { derivedStateOf { supportedLocalesNow } }
     val localization = Vocabulary.localization
     rememberScrollState(0f)
     LazyColumn(modifier = modifier.fillMaxWidth()) {
@@ -88,7 +90,7 @@ fun LanguageChooser(modifier: Modifier = Modifier, onClick: (Locale) -> Unit = {
                 Text(text = localization.localesHeader(), style = MaterialTheme.typography.h4)
             }
         }
-        items(locales.value.toList()) { locale ->
+        items(locales.toList()) { locale ->
             val background =
                 if (locale == localization.locale)
                     Color.Green.copy(alpha = 0.3f)
@@ -121,6 +123,6 @@ fun Examples(modifier: Modifier = Modifier) {
         val localization = Vocabulary.localization
         Text(text = localization.hello(), style = MaterialTheme.typography.h4)
         Text(text = localization.bye(), style = MaterialTheme.typography.h4)
-        Text(text = localization.nonTrans(), style = MaterialTheme.typography.h4)
+        Text(text = localization.nonTrans().format(20, 9), style = MaterialTheme.typography.h4)
     }
 }

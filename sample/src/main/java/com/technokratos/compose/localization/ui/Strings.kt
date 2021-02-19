@@ -31,4 +31,4 @@ val bye = Translatable("bye", "Goodbye!") {
     )
 }
 
-val nonTrans = NonTranslatable("poh", "afjgrjad")
+val nonTrans = NonTranslatable("format", "%1\$d:%2\$02d")
