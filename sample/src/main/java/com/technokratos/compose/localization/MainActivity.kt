@@ -1,7 +1,5 @@
 package com.technokratos.compose.localization
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import java.util.Locale
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -13,8 +11,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -23,8 +21,10 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,11 +39,11 @@ import com.technokratos.compose.localization.ui.supportedLocalesNow
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.setContent(null) {
+        setContent(null) {
             MyApp {
                 Column(modifier = Modifier.fillMaxSize()) {
                     LanguageChooser(onClick = it)
-                    Spacer(modifier = Modifier.preferredHeight(8.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
                     Examples(modifier = Modifier.weight(1f))
                 }
             }
@@ -71,7 +71,7 @@ fun DefaultPreview() {
     MyApp {
         Column(modifier = Modifier.fillMaxSize()) {
             LanguageChooser(modifier = Modifier.weight(1f))
-            Spacer(modifier = Modifier.preferredHeight(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             Examples(modifier = Modifier.weight(0.3f))
         }
     }
@@ -81,7 +81,7 @@ fun DefaultPreview() {
 fun LanguageChooser(modifier: Modifier = Modifier, onClick: (Locale) -> Unit = {}) {
     val locales by remember { derivedStateOf { supportedLocalesNow } }
     val localization = Vocabulary.localization
-    rememberScrollState(0f)
+    rememberScrollState(0)
     LazyColumn(modifier = modifier.fillMaxWidth()) {
         // use `item` for separate elements like headers
         // and `items` for lists of identical elements
