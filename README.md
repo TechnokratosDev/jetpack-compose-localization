@@ -5,10 +5,18 @@
 Ключевые моменты:
 -
 - Работает без ссылки на `android.content.Context`
-- Использует инструмент `Ambient` (аналогично темам)
-- Пока не сохраняет текущую локаль между запусками (*все впереди!*)
+- Использует инструмент `CompositionLocal` (аналогично темам)
 - Позволяет реактивно менять локаль, не заботясь о обновлении вьюшек
 - Если строка не указана для какой-либо локали, будет автоматически взята строка из дефолтной локали
+
+TODO
+-
+- plurals
+- Возможность изменения дефолтной локали
+- Сохранение дефолтной локали между запусками
+- type-safety formatting (возможно)
+- Удаление идентификатора из параметров
+
 
 Применение
 -
@@ -24,11 +32,12 @@ val supportedLocalesNow = registerSupportedLocales(RUSSIAN, TATAR)
 // 1st parameter: идентификатор нигде более неиспользуемый, TODO подумать как убрать
 // 2nd parameter: значение для дефолтной локали (английский)
 // 3rd parameter: лямбда, возвращающая мапу Локаль-Строка
-val hello = Translatable("hello", "Hello!") {  
-  hashMapOf(  
-      RUSSIAN to "Привет!",  
-	  TATAR to "Исәнме!"  
-  )
+val hello = Translatable("hello", "Hello!") {
+    hashMapOf(
+        RUSSIAN to "Привет!",
+        TATAR to "Исәнме!"
+    )
+}
   // вариант для непереводимых строк
 val nonTrans = NonTranslatable("format", "%1\$d:%2\$02d")
 ```
@@ -37,7 +46,7 @@ val nonTrans = NonTranslatable("format", "%1\$d:%2\$02d")
 ```kotlin
 @Composable
 fun Content() {
-  Column() {
+  Column {
     // Vocabulary - объект из библиотеки для быстрого доступа к локализации
     // получаем объект текущей локализации
     val localization = Vocabulary.localization  
