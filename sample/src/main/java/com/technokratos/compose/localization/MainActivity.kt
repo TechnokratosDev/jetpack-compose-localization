@@ -4,6 +4,7 @@ import java.util.Locale
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -34,6 +36,7 @@ import com.technokratos.compose.localization.ui.bye
 import com.technokratos.compose.localization.ui.hello
 import com.technokratos.compose.localization.ui.localesHeader
 import com.technokratos.compose.localization.ui.nonTrans
+import com.technokratos.compose.localization.ui.plural
 import com.technokratos.compose.localization.ui.supportedLocalesNow
 
 class MainActivity : AppCompatActivity() {
@@ -115,14 +118,37 @@ fun LanguageChooser(modifier: Modifier = Modifier, onClick: (Locale) -> Unit = {
 
 @Composable
 fun Examples(modifier: Modifier = Modifier) {
-    Column(
+    val localization = Vocabulary.localization
+    LazyColumn(
         modifier = modifier
             .fillMaxWidth()
             .padding(8.dp)
     ) {
-        val localization = Vocabulary.localization
-        Text(text = localization.hello(), style = MaterialTheme.typography.h4)
-        Text(text = localization.bye(), style = MaterialTheme.typography.h4)
-        Text(text = localization.nonTrans().format(20, 9), style = MaterialTheme.typography.h4)
+        item {
+            Text(text = localization.hello(), style = MaterialTheme.typography.h5)
+        }
+        item {
+            Text(text = localization.bye(), style = MaterialTheme.typography.h5)
+        }
+        item {
+            Text(text = localization.nonTrans().format(20, 9), style = MaterialTheme.typography.h5)
+        }
+        item {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "Plurals",
+                    style = MaterialTheme.typography.h4
+                )
+                Canvas(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .requiredHeight(1.dp),
+                    onDraw = { drawRect(color = Color.Black) })
+            }
+        }
+        items(arrayOf(0.0, 0.5, 1.0, 81.0, 2.0, 10.0, 11.0)) {
+            Text(text = "$it ${localization.plural(it)}", style = MaterialTheme.typography.h5)
+        }
     }
 }
