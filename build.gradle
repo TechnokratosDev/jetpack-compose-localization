@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.kotlin_version = "1.4.30"
-    ext.compose_version = '1.0.0-beta01'
+    ext.kotlin_version = "1.4.31"
+    ext.compose_version = '1.0.0-beta02'
     repositories {
         google()
         mavenCentral()
@@ -19,6 +19,9 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url "https://kotlin.bintray.com/kotlinx"
+        }
     }
 }
 
