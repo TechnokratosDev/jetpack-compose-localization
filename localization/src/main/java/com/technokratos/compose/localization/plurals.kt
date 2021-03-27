@@ -5,11 +5,11 @@ import kotlin.math.absoluteValue
 import android.util.Log
 
 class PluralRule(
-    val zero: (Double, Long, Long, Int) -> Boolean = { _, _, _, _ -> false },
-    val one: (Double, Long, Long, Int) -> Boolean = { _, _, _, _ -> false },
-    val two: (Double, Long, Long, Int) -> Boolean = { _, _, _, _ -> false },
-    val few: (Double, Long, Long, Int) -> Boolean = { _, _, _, _ -> false },
-    val many: (Double, Long, Long, Int) -> Boolean = { _, _, _, _ -> false }
+    val zero: (Double, Long, Long, Int, Int) -> Boolean = { _, _, _, _, _ -> false },
+    val one: (Double, Long, Long, Int, Int) -> Boolean = { _, _, _, _, _ -> false },
+    val two: (Double, Long, Long, Int, Int) -> Boolean = { _, _, _, _, _ -> false },
+    val few: (Double, Long, Long, Int, Int) -> Boolean = { _, _, _, _, _ -> false },
+    val many: (Double, Long, Long, Int, Int) -> Boolean = { _, _, _, _, _ -> false }
 )
 
 class Plural(
@@ -58,30 +58,13 @@ fun Localization.getPlural(name: String, quantity: Double): CharSequence? {
             absQuantity,
             integerPart,
             fractionPart,
-            fractionPartDigitCount
+            fractionPartDigitCount,
+            0
         )
     }
 }
 
-private val defaultPluralRule = PluralRule()
-private val localeToPluralRule: Map<Locale, PluralRule> = mutableMapOf(
-    Locale.ENGLISH to PluralRule(
-        one = { _: Double, i: Long, _: Long, v: Int ->
-            i == 1L && v == 0
-        }
-    ),
-    Locale("ru") to PluralRule(
-        one = { _: Double, i: Long, _: Long, v: Int ->
-            v == 0 && i % 10 == 1L && i % 100 != 11L
-        },
-        few = { _: Double, i: Long, _: Long, v: Int ->
-            v == 0 && i % 10 in 2..4 && i % 100 !in 12..14
-        },
-        many = { _: Double, i: Long, _: Long, v: Int ->
-            v == 0 && (i % 10 == 0L || i % 10 in 5..9 || i % 100 in 11..14)
-        }
-    )
-)
+private val defaultPluralRule = onlyOther
 
 fun isLocaleRegistered(locale: Locale): Boolean {
     return localeToPluralRule.containsKey(locale)
@@ -93,16 +76,17 @@ fun resolveString(
     n: Double,
     i: Long,
     f: Long,
-    v: Int
+    v: Int,
+    e: Int
 ): CharSequence {
     val rule = localeToPluralRule[locale] ?: defaultPluralRule
 
     return when {
-        rule.zero(n, i, f, v) && plural.zero != null -> plural.zero
-        rule.one(n, i, f, v) && plural.one != null -> plural.one
-        rule.two(n, i, f, v) && plural.two != null -> plural.two
-        rule.few(n, i, f, v) && plural.few != null -> plural.few
-        rule.many(n, i, f, v) && plural.many != null -> plural.many
+        rule.zero(n, i, f, v, e) && plural.zero != null -> plural.zero
+        rule.one(n, i, f, v, e) && plural.one != null -> plural.one
+        rule.two(n, i, f, v, e) && plural.two != null -> plural.two
+        rule.few(n, i, f, v, e) && plural.few != null -> plural.few
+        rule.many(n, i, f, v, e) && plural.many != null -> plural.many
         else -> plural.other
     }
 }
