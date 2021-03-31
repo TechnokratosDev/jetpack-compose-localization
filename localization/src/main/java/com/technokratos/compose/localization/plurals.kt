@@ -29,6 +29,7 @@ fun Plurals(
     defaultLocalization.plurals[name] = defaultValue
     for ((locale, value) in localeToPlural().entries) {
         if (!isLocaleRegistered(locale)) {
+            // TODO issue-9
             Log.w(
                 "jcl10n",
                 "There is no plural rule for $locale currently. Plural's 'other = ${value.other}' field can be used only!"
@@ -44,7 +45,7 @@ fun Plurals(
     }
 }
 
-fun Localization.getPlural(name: String, quantity: Double): CharSequence? {
+private fun Localization.getPlural(name: String, quantity: Double): CharSequence? {
     val absQuantity = quantity.absoluteValue
     val (int, frac) = absQuantity.toString().split('.')
     val integerPart = int.toLong()
@@ -59,18 +60,18 @@ fun Localization.getPlural(name: String, quantity: Double): CharSequence? {
             integerPart,
             fractionPart,
             fractionPartDigitCount,
-            0
+            0 // we don't support String quantity parameter now so exp part is always 0
         )
     }
 }
 
 private val defaultPluralRule = onlyOther
 
-fun isLocaleRegistered(locale: Locale): Boolean {
+private fun isLocaleRegistered(locale: Locale): Boolean {
     return localeToPluralRule.containsKey(locale)
 }
 
-fun resolveString(
+private fun resolveString(
     plural: Plural,
     locale: Locale,
     n: Double,
