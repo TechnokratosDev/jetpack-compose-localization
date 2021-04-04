@@ -6,15 +6,16 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.compositionLocalOf
 
-private val defaultLocalization: Localization = Localization(Locale.ENGLISH)
+internal val defaultLocalization: Localization = Localization(Locale.ENGLISH)
 
 private val supportedLocales: MutableSet<Locale> = mutableSetOf()
 
-private val localizationMap = hashMapOf<Locale, Localization>()
+internal val localizationMap = hashMapOf<Locale, Localization>()
 
 data class Localization(
     val locale: Locale,
-    internal val strings: MutableMap<String, String> = mutableMapOf()
+    internal val strings: MutableMap<String, String> = mutableMapOf(),
+    internal val plurals: MutableMap<String, Plural> = mutableMapOf()
 )
 
 fun registerSupportedLocales(vararg locales: Locale): Set<Locale> {

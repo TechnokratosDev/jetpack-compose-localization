@@ -1,0 +1,4 @@
+[submodule "cldr"]
+	path = cldr
+	url = git@github.com:unicode-org/cldr.git
+	branch = maint/maint-38-1
