@@ -32,6 +32,17 @@ private fun registerLocalizationForLocale(locale: Locale) {
     localizationMap[locale] = Localization(locale)
 }
 
+/**
+ * Builder function for translatable string resource
+ *
+ * Saves given locales into corresponding [Localization] and returns extension function
+ * that can be used for string resource retrieving
+ *
+ * @param name id of a string resource, TODO remove
+ * @param defaultValue string value for default localization
+ * @param localeToValue closure that returns dictionary of locale to string resource
+ * @return ext function that finds string in [Localization] receiver and returns it
+ */
 fun Translatable(
     name: String,
     defaultValue: String,
@@ -49,6 +60,16 @@ fun Translatable(
     }
 }
 
+/**
+ * Builder function for non-translatable string resource
+ *
+ * Saves given locales into corresponding [Localization] and returns extension function
+ * that can be used for string resource retrieving
+ *
+ * @param name id of a string resource, TODO remove
+ * @param defaultValue string value for default localization
+ * @return ext function that finds string in [Localization] receiver and returns it
+ */
 fun NonTranslatable(name: String, defaultValue: String): Localization.() -> String {
     defaultLocalization.strings[name] = defaultValue
     return fun Localization.(): String {

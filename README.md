@@ -1,44 +1,46 @@
 # Jetpack Compose Localization library  
   
-Бибилиотека для организации строковых ресурсов без применения xml, а также реактивной смены локали  
+Android XML-free string resources library with reactive locale changes
 
-Ключевые моменты:
+This library
 -
-- Работает без ссылки на `android.content.Context`
-- Использует инструмент `CompositionLocal` (аналогично темам)
-- Позволяет реактивно менять локаль, не заботясь о обновлении вьюшек
-- Если строка не указана для какой-либо локали, будет автоматически взята строка из дефолтной локали
+- works without `android.content.Context` instance reference
+- uses `CompositionLocal` (like `MaterialTheme`)
+- changes locale reactively w/o headache of imperative view state management
+- falls back to the default locale automatically
+- has plurals support out of the box
 
 TODO
 -
-- plurals
-- Возможность изменения дефолтной локали
-- Сохранение дефолтной локали между запусками
-- type-safety formatting (возможно)
-- Удаление идентификатора из параметров
+- Setting up the default locale
+- Preserving the default locale between restarts 
+- Type-safety formatting (may be)
+- Remove 'name' parameter from `(Non)Translatable`
+- Interop with old Android XML resources
+- String resource overriding in multi-module projects
 
-
-Применение
+Usage
 -
 **_Strings.kt_**
 ```kotlin
-// создаем интересующие нас локали 
-// английская локаль добавлена по умолчанию
+// create and register necessary locales
+// English locale is registered by default
 val RUSSIAN = Locale("ru")  
 val TATAR = Locale("tt")  
   
-val supportedLocalesNow = registerSupportedLocales(RUSSIAN, TATAR)  
-  
-// 1st parameter: идентификатор нигде более неиспользуемый, TODO подумать как убрать
-// 2nd parameter: значение для дефолтной локали (английский)
-// 3rd parameter: лямбда, возвращающая мапу Локаль-Строка
+val supportedLocalesNow = registerSupportedLocales(RUSSIAN, TATAR)
+
+// 1st parameter name: id of a string, TODO remove
+// 2nd parameter: string value for default localization
+// 3rd parameter: closure that returns dictionary of locale to string resource
+// hello is ext function that finds string in Localization receiver and returns it
 val hello = Translatable("hello", "Hello!") {
     hashMapOf(
         RUSSIAN to "Привет!",
         TATAR to "Исәнме!"
     )
 }
-  // вариант для непереводимых строк
+// non-translatable variant
 val nonTrans = NonTranslatable("format", "%1\$d:%2\$02d")
 ```
 
@@ -47,13 +49,12 @@ val nonTrans = NonTranslatable("format", "%1\$d:%2\$02d")
 @Composable
 fun Content() {
   Column {
-    // Vocabulary - объект из библиотеки для быстрого доступа к локализации
-    // получаем объект текущей локализации
+    // Vocabulary - helper object for statical referencing on current Localization
     val localization = Vocabulary.localization  
-    // на нем вызываем определенную ранее extension-функцию, 
-    // которая вернет строку в нужной локали
+    // call the defined function on the retrieved localization
+    // that returns string in appropriate locale
     Text(text = localization.hello())
-    // эта строка не будет переводиться
+    // this string is always same
     Text(text = localization.nonTrans().format(20, 9))
   }
 }
@@ -68,7 +69,7 @@ setContent {
   }
 }
 ```
-При изменении состояния `locale`, будет изменяться текст по всей иерархии.
+`locale` change leads on text translating in entire hierarchy
 
 Sample
 -
