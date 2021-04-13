@@ -46,10 +46,10 @@ private fun registerLocalizationForLocale(locale: Locale) {
 fun Translatable(
     name: String,
     defaultValue: String,
-    localeToValue: () -> Map<Locale, String>
+    localeToValue: Map<Locale, String>
 ): Localization.() -> String {
     defaultLocalization.strings[name] = defaultValue
-    for ((locale, value) in localeToValue().entries) {
+    for ((locale, value) in localeToValue.entries) {
         val localization =
             localizationMap[locale] ?: throw RuntimeException("There is no locale $locale")
         localization.strings[name] = value

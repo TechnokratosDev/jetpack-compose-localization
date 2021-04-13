@@ -24,10 +24,10 @@ class Plural(
 fun Plurals(
     name: String,
     defaultValue: Plural,
-    localeToPlural: () -> Map<Locale, Plural>
+    localeToPlural: Map<Locale, Plural>
 ): Localization.(Double) -> CharSequence {
     defaultLocalization.plurals[name] = defaultValue
-    for ((locale, value) in localeToPlural().entries) {
+    for ((locale, value) in localeToPlural.entries) {
         if (!isLocaleRegistered(locale)) {
             // TODO issue-9
             Log.w(

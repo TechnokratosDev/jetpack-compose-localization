@@ -34,12 +34,14 @@ val supportedLocalesNow = registerSupportedLocales(RUSSIAN, TATAR)
 // 2nd parameter: string value for default localization
 // 3rd parameter: closure that returns dictionary of locale to string resource
 // hello is ext function that finds string in Localization receiver and returns it
-val hello = Translatable("hello", "Hello!") {
+val hello = Translatable(
+    "hello",
+    "Hello!",
     hashMapOf(
         RUSSIAN to "Привет!",
         TATAR to "Исәнме!"
     )
-}
+)
 // non-translatable variant
 val nonTrans = NonTranslatable("format", "%1\$d:%2\$02d")
 ```
