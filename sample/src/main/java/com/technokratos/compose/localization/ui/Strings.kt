@@ -13,7 +13,6 @@ val TATAR = Locale("tt")
 val supportedLocalesNow = registerSupportedLocales(RUSSIAN, TATAR)
 
 val localesHeader = Translatable(
-    "locales",
     "Locales",
     hashMapOf(
         RUSSIAN to "Локали",
@@ -22,7 +21,6 @@ val localesHeader = Translatable(
 )
 
 val hello = Translatable(
-    "hello",
     "Hello!",
     hashMapOf(
         RUSSIAN to "Привет!",
@@ -31,7 +29,6 @@ val hello = Translatable(
 )
 
 val bye = Translatable(
-    "bye",
     "Goodbye!",
     hashMapOf(
         RUSSIAN to "Пока!",
@@ -39,10 +36,9 @@ val bye = Translatable(
     )
 )
 
-val nonTrans = NonTranslatable("format", "%1\$d:%2\$02d")
+val nonTrans = NonTranslatable("%1\$d:%2\$02d")
 
 val plural = Plurals(
-    "plural",
     Plural(one = "it's one", other = "it's other"),
     hashMapOf(
         RUSSIAN to Plural(

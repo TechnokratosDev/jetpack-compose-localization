@@ -22,9 +22,9 @@ class Plural(
 )
 
 fun Plurals(
-    name: String,
     defaultValue: Plural,
-    localeToPlural: Map<Locale, Plural>
+    localeToPlural: Map<Locale, Plural>,
+    name: Int = generateUID()
 ): Localization.(Double) -> CharSequence {
     defaultLocalization.plurals[name] = defaultValue
     for ((locale, value) in localeToPlural.entries) {
@@ -45,7 +45,19 @@ fun Plurals(
     }
 }
 
-private fun Localization.getPlural(name: String, quantity: Double): CharSequence? {
+fun Plurals(
+    name: Any,
+    defaultValue: Plural,
+    localeToPlural: Map<Locale, Plural>
+): Localization.(Double) -> CharSequence {
+    return Plurals(
+        defaultValue,
+        localeToPlural,
+        generateUID(name)
+    )
+}
+
+private fun Localization.getPlural(name: Int, quantity: Double): CharSequence? {
     val absQuantity = quantity.absoluteValue
     val (int, frac) = absQuantity.toString().split('.')
     val integerPart = int.toLong()
