@@ -56,7 +56,7 @@ fun Translatable(
     }
     return fun Localization.(): String {
         return this.strings[id] ?: defaultLocalization.strings[id]
-        ?: throw RuntimeException("There is no string called $id in localization $this")
+        ?: error("There is no string called $id in localization $this")
     }
 }
 
@@ -97,7 +97,7 @@ fun NonTranslatable(defaultValue: String, id: Int = generateUID()): Localization
     defaultLocalization.strings[id] = defaultValue
     return fun Localization.(): String {
         return defaultLocalization.strings[id]
-            ?: throw RuntimeException("There is no string called $id in localization default")
+            ?: error("There is no string called $id in localization default")
     }
 }
 
