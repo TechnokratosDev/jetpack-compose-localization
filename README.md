@@ -1,3 +1,5 @@
+![Builds](https://github.com/TechnokratosDev/jetpack-compose-localization/actions/workflows/builds.yml/badge.svg)
+
 # Jetpack Compose Localization library  
   
 Android XML-free string resources library with reactive locale changes
